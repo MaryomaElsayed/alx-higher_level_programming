@@ -1,0 +1,29 @@
+class MyTestCase(unittest.TestCase):
+    def setUp(self):
+        # Create an instance of MyClass before each test method
+        self.my_list = Myclass()
+
+    def test_append(self):
+        self.my_list.append(1)
+        self.assertEqual(self.my_list, [1])
+        self.assertEqual(len(self.my_list), 1)
+
+    def test_print_sorted(self):
+        self.my_list.append(5)
+        self.my_list.append(2)
+        self.my_list.append(4)
+        self.my_list.append(1)
+        self.my_list.append(3)
+        
+        captured_output = io.StringIO()  # Create a stream to capture the output
+        sys.stdout = captured_output  # Redirect stdout to the stream
+        
+        self.my_list.print_sorted()  # Call the method that prints the list sorted
+        
+        sys.stdout = sys.__stdout__  # Restore stdout
+        
+        output = captured_output.getvalue().strip()
+        self.assertEqual(output, "[1, 2, 3, 4, 5]")  # Assert that the output is as expected
+
+if __name__ == '__main__':
+    unittest.main()
