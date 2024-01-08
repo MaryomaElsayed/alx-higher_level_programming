@@ -1,25 +1,36 @@
 #!/usr/bin/python3
 """
-This script lists all states from the
-database `hbtn_0e_0_usa`.
+Lists all states from the database hbtn_0e_0_usa sorted in ascending order by
+states.id
 """
-
 import MySQLdb
-from sys import argv
+import sys
 
-if __name__ == '__main__':
-        """
-            Access to the database and get the states
-                from the database.
-                    """
-                        db_connect = MySQLdb.connect(
-                                        host="localhost", user=argv[1], port=3306, passwd=argv[2], db=argv[3])
 
-                            db_cursor = db_connect.cursor()
+if __name__ == "__main__":
+        mysql_username = sys.argv[1]
+            mysql_password = sys.argv[2]
+                db_name = sys.argv[3]
 
-                                db_cursor.execute("SELECT * FROM states")
+                    try:
+                                conn = MySQLdb.connect(
+                                                    host="localhost",
+                                                                port=3306,
+                                                                            user=mysql_username,
+                                                                                        passwd=mysql_password,
+                                                                                                    db=db_name,
+                                                                                                                charset="utf8"
+                                                                                                                        )
+                                    except MySQLdb.Error as e:
+                                                print("Error connecting to database: {}".format(e))
+                                                        sys.exit(1)
 
-                                    rows_selected = db_cursor.fetchall()
+                                                            cur = conn.cursor()
+                                                                cur.execute("SELECT * FROM states ORDER BY id ASC")
+                                                                    rows = cur.fetchall()
 
-                                        for row in rows_selected:
-                                                    print(row))
+                                                                        for row in rows:
+                                                                                    print(row)
+
+                                                                                        cur.close()
+                                                                                            conn.close()
